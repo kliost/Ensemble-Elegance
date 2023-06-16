@@ -11,12 +11,10 @@ h1 {
 
 table {
     width: 100%;
-    border-collapse: collapse;
 }
 
     table td, table th {
         padding: 10px;
-        border: 1px solid #ddd;
     }
 
     table th {

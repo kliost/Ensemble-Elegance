@@ -1,6 +1,8 @@
 ﻿@model List<Ensemble_Elegance.Models.ProductModel>
 <link rel="stylesheet" href="/css/Catalogue.css" />
-
+@{
+    var paginationModel = ViewData["paginationModel"] as PaginationModel;
+}
 <body>
     <div class="filter-list">
 
@@ -11,6 +13,26 @@
             <product-card product="@product"></product-card>
         }
     </div>
-
+    <nav class="justify-content-center">
+        <ul class="pagination">
+            
+            
+            <li class="page-item @(paginationModel.CurrentPage <= 1 ? "disabled" : "")">
+                <a class="page-link" href="/Home/Catalogue?page=@(paginationModel.CurrentPage - 1)">&laquo; Previous</a>
+            </li>
+            
+            @for (int i = 1; i <= paginationModel.PageCount; i++)
+            {
+                <li class="page-item @(i == paginationModel.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="/Home/Catalogue?page=@i">@i</a>
+                </li>
+            }
+            
+            <li class="page-item  @(paginationModel.CurrentPage <= paginationModel.PageCount ? "disabled" : "")">
+                <a class="page-link" href="/Home/Catalogue?page=@(paginationModel.CurrentPage + 1)">Next &raquo;</a>
+            </li>
+            
+        </ul>
+    </nav>
 </body>
 
