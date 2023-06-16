@@ -1,8 +1,10 @@
 ﻿@model List<CartProductModel>
 
+<link rel="stylesheet" href="/css/Cart.css" />
 <table class="table">
     <thead>
         <tr>
+            <th scope="col">Image</th>
             <th scope="col">Name</th>
             <th scope="col">Price</th>
             <th scope="col">Quantity</th>
@@ -15,20 +17,34 @@
             foreach (var item in Model)
             {
                 <tr>
-                    <th scope="row">@item.Name</th>
-                    <td>@item.Price$</td>
-                    <td>@item.Quantity</td>
+                    <th class="product-image" scope="row"><img src="/images/@item.Id/@item.ImageFileName" /></th>
+                    <th class="product-name">@item.Name</th>
+                    <td class="product-price">@item.Price$</td>
+                    <td class="product-quantity-div">
+                        <div style="display: flex">
+                            <form action="/Cart/DecrementQuantity" method="post">
+                                <input type="hidden" name="itemId" value="@item.Id" />
+                                <button type="submit">-</button>
+                            </form>
+                            @item.Quantity
+                            <form action="/Cart/IncrementQuantity" method="post">
+                                <input type="hidden" name="itemId" value="@item.Id" />
+                                <button type="submit">+</button>
+                            </form>
+                        </div>
+                    </td>
+
                     @{
                         double sum = item.Price * item.Quantity;
                         Asum += sum;
                     }
-                    <td>@sum$</td>
+                    <td class="product-sum">@sum$</td>
                 </tr>
 
             }
             if (Asum > 0)
             {
-                <tr>
+                <tr class="total">
                     <th scope="row"></th>
                     <td></td>
                     <td></td>

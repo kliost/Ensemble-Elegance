@@ -18,8 +18,7 @@ public class ProductModel
     public string? Description { get; set; }
     [Required]
     public double Price { get; set; }
-    [Required]
-    public Category categoryList { get; set; }
+
     [Required]
     [NotMapped]
     [AllowExtension(Extensions = "png,jpg,jpeg", ErrorMessage = "This file type is not supported")]

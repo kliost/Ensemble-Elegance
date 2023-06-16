@@ -25,12 +25,12 @@
         <span asp-validation-for="ShortDescription"></span>
     </div>
 
-    <div>
+    @*<div>
         <label asp-for="Category"></label><br />
         <input value="@Model.Category" asp-for="Category" />
         <span asp-validation-for="Category"></span>
     </div>
-
+    *@
     <div>
         <input type="file" asp-for="imageFile" accept="image/png, image/jpeg" />
         <span asp-validation-for="imageFile"></span>
