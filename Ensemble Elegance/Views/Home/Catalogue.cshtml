@@ -1,0 +1,16 @@
+﻿@model List<Ensemble_Elegance.Models.ProductModel>
+
+
+<body>
+    <div class="filter-list">
+
+    </div>
+    <div class="product-list">
+        @foreach (var product in Model)
+        {
+            <product-card product="@product"></product-card>
+        }
+    </div>
+
+</body>
+

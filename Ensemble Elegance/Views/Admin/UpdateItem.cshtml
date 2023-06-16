@@ -1,0 +1,50 @@
+﻿@model ProductModel
+@{
+    Layout = "AdminLayout";
+}
+<form method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="UpdateItem">
+    <input type="hidden" value="@Model.Id" asp-for="Id" />
+    <div>
+        <label asp-for="Name"></label><br />
+        <input value="@Model.Name" asp-for="Name" />
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div>
+        <label asp-for="Price"></label><br />
+        <input value="@Model.Price" asp-for="Price" />
+        <span asp-validation-for="Price"></span>
+    </div>
+    <div>
+        <label asp-for="Description"></label><br />
+        <input value="@Model.Description" asp-for="Description" />
+        <span asp-validation-for="Description"></span>
+    </div>
+    <div>
+        <label asp-for="ShortDescription"></label><br />
+        <input value="@Model.ShortDescription" asp-for="ShortDescription" />
+        <span asp-validation-for="ShortDescription"></span>
+    </div>
+
+    <div>
+        <label asp-for="Category"></label><br />
+        <input value="@Model.Category" asp-for="Category" />
+        <span asp-validation-for="Category"></span>
+    </div>
+
+    <div>
+        <input type="file" asp-for="imageFile" accept="image/png, image/jpeg" />
+        <span asp-validation-for="imageFile"></span>
+    </div>
+
+
+    <div>
+        <input class="btn btn-primary" type="submit" value="Udate" />
+    </div>
+
+
+
+
+</form>
+
+
+

@@ -1,0 +1,4 @@
+﻿@if (User.Identity != null && User.Identity.IsAuthenticated)
+{
+    <p>@User.Identity.Name</p>
+}

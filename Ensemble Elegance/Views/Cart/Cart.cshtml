@@ -1,0 +1,42 @@
+﻿@model List<CartProductModel>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Sum</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            double Asum = 0;
+            foreach (var item in Model)
+            {
+                <tr>
+                    <th scope="row">@item.Name</th>
+                    <td>@item.Price$</td>
+                    <td>@item.Quantity</td>
+                    @{
+                        double sum = item.Price * item.Quantity;
+                        Asum += sum;
+                    }
+                    <td>@sum$</td>
+                </tr>
+
+            }
+            if (Asum > 0)
+            {
+                <tr>
+                    <th scope="row"></th>
+                    <td></td>
+                    <td></td>
+                    <td>@Asum$</td>
+                </tr>
+            }
+        }
+            
+    </tbody>
+</table>
+
