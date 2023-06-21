@@ -14,11 +14,9 @@ namespace Ensemble_Elegance.Controllers
     {
 
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<UserModel> _userManager;
         private readonly ISession _session;
         public CartController(ApplicationDbContext context, UserManager<UserModel> userManager, IHttpContextAccessor httpContextAccessor)
         {
-            _userManager = userManager;
             _context = context;
             _session = httpContextAccessor.HttpContext.Session;
         }

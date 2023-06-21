@@ -1,5 +1,34 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<ProductModel>
 @{
+    var visitedproducts = ViewBag.visitedProducts;
 }
+<head>
+    <link rel="stylesheet" href="/css/Product.css" />
+    <link rel="stylesheet" href="/css/Index.css" />
+
+
+</head>
+@{
+
+}
+
+<body>
+
+    <div class="product-list">
+        @if(visitedproducts != null)
+        {
+            foreach(var product in visitedproducts)
+            {
+                <product-card product="@product"></product-card>
+            }
+        }
+    </div>
+
+
+
+
+</body>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/js/Index.js"></script>

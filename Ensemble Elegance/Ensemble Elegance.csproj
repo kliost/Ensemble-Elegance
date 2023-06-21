@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\css\Catalogue.css" />
+    <None Include="wwwroot\css\Product.css" />
     <None Include="wwwroot\js\site.js" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
@@ -63,6 +63,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.IdentityModel.Logging" Version="6.29.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Slick" Version="1.5.11" />
   </ItemGroup>
 
   <ItemGroup>

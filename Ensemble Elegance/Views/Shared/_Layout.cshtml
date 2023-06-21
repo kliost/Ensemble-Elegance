@@ -29,8 +29,8 @@
                         <ul class="nav-links">
                             <li><a asp-controller="Home" asp-action="Index">Головна</a></li>
                             <li><a asp-controller="Home" asp-action="Catalogue">Каталог</a></li>
-                            <li><a asp-controller="Info" asp-action="About">Про нас</a></li>
-                            <li><a asp-controller="Info" asp-action="Contacts">Контакти</a></li>
+                            <li><a asp-controller="Home" asp-action="About">Про нас</a></li>
+                            <li><a asp-controller="Home" asp-action="Contacts">Контакти</a></li>
                         </ul>
                         <ul class="user-links">
                             @if (User.Identity != null)
@@ -50,7 +50,7 @@
                                 @if (User.IsInRole("Admin"))
                                 {
                                     <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="AdminPanel">Admin panel</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="AdminPage">Admin</a>
                                     </li>
                                 }
                             }

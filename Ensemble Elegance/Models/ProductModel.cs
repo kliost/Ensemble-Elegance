@@ -25,4 +25,30 @@ public class ProductModel
     public IFormFile? imageFile { get; set; }
 
     public string? ImageFileName { get; set; }
+
+
+
+
+
+
+
+
+
+
+
+    public override bool Equals(object obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+        {
+            return false;
+        }
+
+        ProductModel other = (ProductModel)obj;
+        return Id == other.Id;
+    }
+
+    public override int GetHashCode()
+    {
+        return Id.GetHashCode();
+    }
 }

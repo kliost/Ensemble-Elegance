@@ -129,7 +129,7 @@ namespace Ensemble_Elegance.Controllers
 
         //Navigation
         [HttpGet]
-        public IActionResult AdminPanel()
+        public IActionResult AdminPage()
         {
             return View();
         }
@@ -147,9 +147,9 @@ namespace Ensemble_Elegance.Controllers
         [HttpGet]
         public async Task<IActionResult> UserList()
         {
-            var user = await _userManager.GetUserAsync(User);
-            var roles = await _userManager.GetRolesAsync(user);
-            var Users = _context.Users.ToList();
+
+
+            var Users = await _context.Users.ToListAsync();
             return View(Users);
         }
 

@@ -16,11 +16,13 @@ namespace Ensemble_Elegance.TagHelpers
 
             var content =
                 $@"
-              <input type='hidden' value={Product.Id} />
-              <img src='/images/{Product.Id}/{Product.ImageFileName}' alt='Product Image' class='product-image'>
-              <h3 class='product-title'>{Product.Name}</h3>
-              <p class='product-description'>{Product.ShortDescription}</p>
-              <p class='product-price'>₴{Product.Price}</p>
+              <a href='/Home/ProductPage?productId={Product.Id}'>
+                    <input type='hidden' value={Product.Id} />
+                    <img src='/images/{Product.Id}/{Product.ImageFileName}' alt='Product Image' class='product-image'>
+                    <h3 class='product-title'>{Product.Name}</h3>
+                    <p class='product-description'>{Product.ShortDescription}</p>
+                    <p class='product-price'>₴{Product.Price}</p>
+              </a>
               <a href='/Cart/AddToCartById?itemId={Product.Id}' class='add-to-cart-btn' >Додати до корзини</a>
                 ";
             output.Content.SetHtmlContent(content);
