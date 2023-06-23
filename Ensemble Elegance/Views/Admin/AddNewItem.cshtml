@@ -1,8 +1,8 @@
 ﻿@model ProductModel
-@{
-    Layout = "AdminLayout";
-}
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/js/AddNewItem.js"></script>
+<link rel="stylesheet" href="/css/AddNewItem.css"/>
 
 <form method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="AddNewItem">
     <div>
@@ -30,10 +30,17 @@
         <input type="file" asp-for="imageFile" accept="image/png, image/jpeg" />
         <span asp-validation-for="imageFile"></span>
     </div>
+    <div class="category-dropdown">
+        <input type="text" id="categoryInput" placeholder="Введіть назву категорії" />
+        <div id="categoryDropdown" class="dropdown-content"></div>
+    </div>
+    <div id="selectedCategories"></div>
+    <div>
+        <input type="hidden" asp-for="CategoriesList" id="selectedCategoriesInput" />
+    </div>
     <div>
         <input class="btn btn-primary" type="submit" value="Add" />
     </div>
-
 
 
 

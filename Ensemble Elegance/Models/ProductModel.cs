@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Web.Mvc;
 using Ensemble_Elegance.Attributes;
+using System.Net;
+
 namespace Ensemble_Elegance.Models;
 
 public class ProductModel
@@ -25,9 +27,11 @@ public class ProductModel
     public IFormFile? imageFile { get; set; }
 
     public string? ImageFileName { get; set; }
+    [Required]
+    [NotMapped]
+    public List<string>? CategoriesList { get; set; }
 
-
-
+    public string? CategoriesJson { get; set; }
 
 
 

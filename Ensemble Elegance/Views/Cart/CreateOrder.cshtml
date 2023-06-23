@@ -1,0 +1,36 @@
+﻿@model OrderModel
+
+<body>
+    <form method="post" asp-action="CreateOrder" asp-controller="Cart">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div>
+            <label asp-for="CustomerName"></label><br />
+            <input asp-for="CustomerName" />
+            <span asp-validation-for="CustomerName"></span>
+        </div>
+        <div>
+            <label asp-for="CustomerSurname"></label><br />
+            <input asp-for="CustomerSurname" />
+            <span asp-validation-for="CustomerSurname"></span>
+        </div>
+        <div>
+            <label asp-for="CustomerEmail"></label><br />
+            <input asp-for="CustomerEmail" />
+            <span asp-validation-for="CustomerEmail"></span>
+        </div>
+        <div>
+            <label asp-for="CustomerPhone"></label><br />
+            <input asp-for="CustomerPhone" />
+            <span asp-validation-for="CustomerPhone"></span>
+        </div>
+        <div>
+            <label asp-for="CustomerAddress"></label><br />
+            <input asp-for="CustomerAddress" />
+            <span asp-validation-for="CustomerAddress"></span>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+
+
+

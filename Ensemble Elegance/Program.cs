@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
 using Ensemble_Elegance.Models;
-using System;
 
 using System.Web.Mvc;
 

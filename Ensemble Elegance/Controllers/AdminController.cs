@@ -3,11 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ensemble_Elegance.Models;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.IO;
-
+using System.Text.Json;
 
 namespace Ensemble_Elegance.Controllers
 {
@@ -64,6 +60,8 @@ namespace Ensemble_Elegance.Controllers
                 {
                     //Saving item to DB
                     item.ImageFileName = item.imageFile.FileName;
+                    item.CategoriesJson = JsonSerializer.Serialize(item.CategoriesList);
+
                     _context.ShopItems.Add(item);
                     await _context.SaveChangesAsync();
 

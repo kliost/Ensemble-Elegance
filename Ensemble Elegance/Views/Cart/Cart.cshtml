@@ -1,56 +1,61 @@
 ﻿@model List<CartProductModel>
 
-<link rel="stylesheet" href="/css/Cart.css" />
- @if(Model.Count == 0)
-     {
+<head>
+    <link rel="stylesheet" href="/css/Cart.css" />
+    
+</head>
+
+<body>
+    @if (Model.Count == 0)
+    {
         <div class="empty-cart-text">
             Ваш кошик порожній. <a href="/Home/Catalogue">Додати</a>
         </div>
-      }
-<table class="table">
-    <tbody>
-        @{
-           
-            double Asum = 0;
-            foreach (var item in Model)
-            {
-                <tr>
-                    <th class="product-image" scope="row"><img src="/images/@item.Id/@item.ImageFileName" /></th>
-                    <th class="product-name">@item.Name</th>
-                    <td class="product-price">@item.Price$</td>
-                    <td class="product-quantity-div">
-                        <div style="display: flex">
-                            <form action="/Cart/DecrementQuantity" method="post">
-                                <input type="hidden" name="itemId" value="@item.Id" />
-                                <button type="submit">-</button>
-                            </form>
-                            @item.Quantity
-                            <form action="/Cart/IncrementQuantity" method="post">
-                                <input type="hidden" name="itemId" value="@item.Id" />
-                                <button type="submit">+</button>
-                            </form>
-                        </div>
-                    </td>
-
+    }
+    else
+    {
+        <table class="table">
+            <tbody>
                     @{
-                        double sum = item.Price * item.Quantity;
-                        Asum += sum;
+                        double Asum = 0;
                     }
-                    <td class="product-sum">@sum$</td>
-                </tr>
-
-            }
-            if (Asum > 0)
-            {
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <input type="hidden" name="Id" value="@item.Id" />
+                        <td class="product-image-cell"><img class="product-image" src="/images/@item.Id/@item.ImageFileName" /></td>
+                        <td class="product-name-cell">@item.Name</td>
+                        <td class="product-price-cell">@item.Price$</td>
+                        <td class="product-quantity-cell">
+                            <div class="quantity-container">
+                                <button class="plus-minus-button" type="submit" formaction="/Cart/DecrementQuantity?itemId=@item.Id">-</button>
+                                <input  id="quantityInput" type="text" class="quantity" value="@item.Quantity" />
+                                <button class="plus-minus-button" type="submit" formaction="/Cart/IncrementQuantity?itemId=@item.Id">+</button>
+                            </div>
+                        </td>
+                            @{
+                                double sum = item.Price * item.Quantity;
+                                Asum += sum;
+                            }
+                        <td class="product-sum-cell">@sum$</td>
+                    </tr>
+                    }
                 <tr class="total">
-                    <th scope="row"></th>
-                    <td></td>
-                    <td></td>
+                    <th colspan="3"></th>
+                    <th>Total:</th>
                     <td>@Asum$</td>
                 </tr>
-            }
-        }
-            
-    </tbody>
-</table>
+                <tr>
+                    <form action="/Cart/CreateOrder" method="get" onkeydown="return event.key != 'Enter';">
+                        <td colspan="5"><button type="submit">Відправити замовлення</button></td>
+                    </form>
+                </tr>
+                
+            </tbody>
+        </table>
+
+    }
+   
+</body>
+<script src="/js/Cart.js"></script>
 

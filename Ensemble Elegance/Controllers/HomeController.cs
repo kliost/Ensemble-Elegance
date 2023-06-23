@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Ensemble_Elegance.Models;
 using Ensemble_Elegance.Extensions;
-using System.Collections.Generic;
-using System.Linq;
+
 
 namespace Ensemble_Elegance.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : Microsoft.AspNetCore.Mvc.Controller
     {
         public readonly ApplicationDbContext _context;
         private readonly ISession _session;

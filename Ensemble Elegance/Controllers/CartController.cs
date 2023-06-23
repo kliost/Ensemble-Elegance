@@ -7,6 +7,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Razor.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Web.Helpers;
+using System.Text.Json;
 
 namespace Ensemble_Elegance.Controllers
 {
@@ -98,12 +99,47 @@ namespace Ensemble_Elegance.Controllers
             _session.SetObject("Cart", cart);
             return RedirectToAction("Cart", "Cart");
         }
+        public IActionResult UpdateQuantity(int itemId, int newQuantity)
+        {
+            List<CartProductModel> cart = _session.GetObject<List<CartProductModel>>("Cart") ?? new List<CartProductModel>();
+            CartProductModel? cartProduct = cart.Where(x => x.Id == itemId).FirstOrDefault();
+            if (cartProduct != null)
+            {
+                cartProduct.Quantity = newQuantity;
+            }
+            _session.SetObject("Cart", cart);
+            return RedirectToAction("Cart", "Cart");
+        }
         public IActionResult DeleteFromCart(int itemId)
         {
             List<CartProductModel> cart = _session.GetObject<List<CartProductModel>>("Cart") ?? new List<CartProductModel>();
             CartProductModel? cartProduct = cart.Where(x => x.Id == itemId).FirstOrDefault();
             if (cartProduct != null) cart.Remove(cartProduct);
             return RedirectToAction("Cart", "Cart");
+        }
+
+        [HttpGet]
+        public IActionResult CreateOrder()
+        {
+            OrderModel order = new OrderModel();
+            return View(order);
+        }
+        [HttpPost]
+        public IActionResult CreateOrder(OrderModel order)
+        {
+            List<CartProductModel> cart = _session.GetObject<List<CartProductModel>>("Cart");
+            if (cart != null)
+            {
+                order.Status = OrderStatus.PendingConfirmation;
+                order.OrderListJson = JsonSerializer.Serialize(cart);
+                _context.Orders.Add(order);
+                _context.SaveChanges();
+                return View("ThanksForOrder");
+            }
+            else
+            {
+                return View("Index");
+            }
         }
     }
 }
