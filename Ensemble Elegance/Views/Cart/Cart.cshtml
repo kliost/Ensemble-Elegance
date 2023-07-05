@@ -21,24 +21,29 @@
                     }
                     @foreach (var item in Model)
                     {
+                    <form method="post">
                     <tr>
-                        <input type="hidden" name="Id" value="@item.Id" />
-                        <td class="product-image-cell"><img class="product-image" src="/images/@item.Id/@item.ImageFileName" /></td>
-                        <td class="product-name-cell">@item.Name</td>
-                        <td class="product-price-cell">@item.Price$</td>
+                        <input type="hidden" name="Id" value="@item.productModel.Id" />
+                        <td class="product-image-cell"><img class="product-image" src="/images/@item.productModel.Id/@item.productModel.ImageFileName" /></td>
+                        <td class="product-name-cell">@item.productModel.Name</td>
+                        <td class="product-price-cell">@item.productModel.Price$</td>
                         <td class="product-quantity-cell">
-                            <div class="quantity-container">
-                                <button class="plus-minus-button" type="submit" formaction="/Cart/DecrementQuantity?itemId=@item.Id">-</button>
-                                <input  id="quantityInput" type="text" class="quantity" value="@item.Quantity" />
-                                <button class="plus-minus-button" type="submit" formaction="/Cart/IncrementQuantity?itemId=@item.Id">+</button>
-                            </div>
+                            
+                                <div class="quantity-container">
+                                    <button class="plus-minus-button" method="post" type="submit" formaction="/Cart/DecrementQuantity?itemId=@item.productModel.Id">-</button>
+                                    <input id="quantityInput" type="text" class="quantity" value="@item.Quantity" />
+                                    <button class="plus-minus-button" type="submit" formaction="/Cart/IncrementQuantity?itemId=@item.productModel.Id">+</button>
+                                </div>
+
                         </td>
+                       
                             @{
-                                double sum = item.Price * item.Quantity;
+                                double sum = item.productModel.Price * item.Quantity;
                                 Asum += sum;
                             }
                         <td class="product-sum-cell">@sum$</td>
                     </tr>
+                    </form>
                     }
                 <tr class="total">
                     <th colspan="3"></th>

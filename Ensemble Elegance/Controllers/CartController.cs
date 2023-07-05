@@ -2,11 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Ensemble_Elegance.Models;
 using Ensemble_Elegance.Extensions;
-using Microsoft.EntityFrameworkCore.Storage;
-using System.Linq;
-using Microsoft.AspNetCore.Razor.Hosting;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Web.Helpers;
 using System.Text.Json;
 
 namespace Ensemble_Elegance.Controllers
@@ -39,24 +34,25 @@ namespace Ensemble_Elegance.Controllers
 
             ProductModel? item = _context.ShopItems.Where(x => x.Id == itemId).FirstOrDefault();
 
-            CartProductModel cartProduct = new()
+            if (item != null)
             {
-                Id = itemId,
-                Name = item?.Name,
-                Price = item.Price,
-                ImageFileName = item?.ImageFileName
-            };
+                CartProductModel cartProduct = new()
+                {
+                    productModel = item
+                };
+                var ExistingProductInCart = cart.Where(x => x.productModel.Id == cartProduct.productModel.Id).FirstOrDefault();
+                if (ExistingProductInCart != null)
+                {
+                    ExistingProductInCart.Quantity++;
+                }
+                else
+                {
+                    cartProduct.Quantity = 1;
+                    cart.Add(cartProduct);
+                }
+            }
 
-            var ExistingProductInCart = cart.Where(x => x.Id == cartProduct.Id).FirstOrDefault();
-            if (ExistingProductInCart != null)
-            {
-                ExistingProductInCart.Quantity++;
-            }
-            else
-            {
-                cartProduct.Quantity = 1;
-                cart.Add(cartProduct);
-            }
+
 
             _session.SetObject("Cart", cart);
             return RedirectToAction("Cart", "Cart");
@@ -72,7 +68,7 @@ namespace Ensemble_Elegance.Controllers
         public IActionResult IncrementQuantity(int itemId)
         {
             List<CartProductModel> cart = _session.GetObject<List<CartProductModel>>("Cart") ?? new List<CartProductModel>();
-            CartProductModel? cartProduct = cart.Where(x => x.Id == itemId).FirstOrDefault();
+            CartProductModel? cartProduct = cart.Where(x => x.productModel.Id == itemId).FirstOrDefault();
 
             if (cartProduct != null)
             {
@@ -84,7 +80,7 @@ namespace Ensemble_Elegance.Controllers
         public IActionResult DecrementQuantity(int itemId)
         {
             List<CartProductModel> cart = _session.GetObject<List<CartProductModel>>("Cart") ?? new List<CartProductModel>();
-            CartProductModel? cartProduct = cart.Where(x => x.Id == itemId).FirstOrDefault();
+            CartProductModel? cartProduct = cart.Where(x => x.productModel.Id == itemId).FirstOrDefault();
 
             if (cartProduct != null)
             {
@@ -102,7 +98,7 @@ namespace Ensemble_Elegance.Controllers
         public IActionResult UpdateQuantity(int itemId, int newQuantity)
         {
             List<CartProductModel> cart = _session.GetObject<List<CartProductModel>>("Cart") ?? new List<CartProductModel>();
-            CartProductModel? cartProduct = cart.Where(x => x.Id == itemId).FirstOrDefault();
+            CartProductModel? cartProduct = cart.Where(x => x.productModel.Id == itemId).FirstOrDefault();
             if (cartProduct != null)
             {
                 cartProduct.Quantity = newQuantity;
@@ -113,7 +109,7 @@ namespace Ensemble_Elegance.Controllers
         public IActionResult DeleteFromCart(int itemId)
         {
             List<CartProductModel> cart = _session.GetObject<List<CartProductModel>>("Cart") ?? new List<CartProductModel>();
-            CartProductModel? cartProduct = cart.Where(x => x.Id == itemId).FirstOrDefault();
+            CartProductModel? cartProduct = cart.Where(x => x.productModel.Id == itemId).FirstOrDefault();
             if (cartProduct != null) cart.Remove(cartProduct);
             return RedirectToAction("Cart", "Cart");
         }

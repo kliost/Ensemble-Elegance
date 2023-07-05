@@ -10,33 +10,15 @@ namespace Ensemble_Elegance.Controllers
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
-
         private readonly ApplicationDbContext _context;
         private readonly UserManager<UserModel> _userManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
+
         public AdminController(ApplicationDbContext context, UserManager<UserModel> userManager, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _userManager = userManager;
             _webHostEnvironment = webHostEnvironment;
-        }
-
-
-        public void SaveImage(ProductModel item)
-        {
-            string itemIdFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", item.Id.ToString());
-            string filepath = itemIdFolder + @"\" + item?.imageFile?.FileName;
-
-            if (!Directory.Exists(itemIdFolder))
-            {
-                Directory.CreateDirectory(itemIdFolder);
-            }
-
-            var stream = new FileStream(filepath, FileMode.Create);
-
-            item.imageFile.CopyTo(stream);
-
-            stream.Close();
         }
 
         //CRUD
@@ -49,13 +31,11 @@ namespace Ensemble_Elegance.Controllers
             return View();
         }
 
-
         [HttpPost]
         public async Task<IActionResult> AddNewItem(ProductModel item)
         {
             if (ModelState.IsValid)
             {
-
                 if (item.imageFile != null)
                 {
                     //Saving item to DB
@@ -66,13 +46,11 @@ namespace Ensemble_Elegance.Controllers
                     await _context.SaveChangesAsync();
 
                     SaveImage(item);
-
                 }
             }
 
             return RedirectToAction("Catalogue", "Home");
         }
-
 
         //Update
 
@@ -89,19 +67,16 @@ namespace Ensemble_Elegance.Controllers
 
                 newItem.ImageFileName = newItem.imageFile.FileName;
                 SaveImage(newItem);
-
             }
             // if image is not changed
             else
             {
                 newItem.ImageFileName = oldItem.ImageFileName;
-
             }
 
             _context.ShopItems.Update(newItem);
             _context.SaveChanges();
             return RedirectToAction("ItemList", "Admin");
-
         }
 
         [HttpGet]
@@ -124,8 +99,8 @@ namespace Ensemble_Elegance.Controllers
             return RedirectToAction("ItemList");
         }
 
-
         //Navigation
+
         [HttpGet]
         public IActionResult AdminPage()
         {
@@ -139,21 +114,35 @@ namespace Ensemble_Elegance.Controllers
             return View(itemlist);
         }
 
-
-
-
         [HttpGet]
         public async Task<IActionResult> UserList()
         {
-
-
             var Users = await _context.Users.ToListAsync();
             return View(Users);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ActiveOrders()
+        {
+            var orders = await _context.Orders.Where(x => x.Status.Value != OrderStatus.Received).ToListAsync();
+            return View(orders);
+        }
 
+        private void SaveImage(ProductModel item)
+        {
+            string itemIdFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", item.Id.ToString());
+            string filepath = Path.Combine(itemIdFolder, item?.imageFile?.FileName);
 
+            if (!Directory.Exists(itemIdFolder))
+            {
+                Directory.CreateDirectory(itemIdFolder);
+            }
 
-
+            using (var stream = new FileStream(filepath, FileMode.Create))
+            {
+                item.imageFile.CopyTo(stream);
+            }
+        }
     }
+
 }

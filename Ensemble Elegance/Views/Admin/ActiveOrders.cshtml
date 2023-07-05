@@ -1,0 +1,62 @@
+﻿@using System.Text.Json;
+@model List<OrderModel>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Active Orders</title>
+    <link rel="stylesheet" href="/css/ActiveOrders.css" />    
+</head>
+<body>
+    <h1>Active Orders</h1>
+
+    @if (Model != null && Model.Count > 0)
+    {
+        <ul class="order-list">
+            @foreach (var order in Model)
+            {
+                <li class="order-item">
+                    <div class="order-details">
+                        <div class="order-info">
+                            <h3>Order ID: @order.Id</h3>
+                            <p>Customer: @order.CustomerName @order.CustomerSurname</p>
+                            <p>Email: @order.CustomerEmail</p>
+                            <p>Phone: @order.CustomerPhone</p>
+                            <p>Address: @order.CustomerAddress</p>
+                        </div>
+                        <div class="order-actions">
+                            @if (order.Status == OrderStatus.PendingConfirmation)
+                            {
+                                <button>Confirm</button>
+                            }
+                            else if (order.Status == OrderStatus.Confirmed)
+                            {
+                            <button>Ship</button>
+                            }
+                            else if (order.Status == OrderStatus.Shipped)
+                            {
+                            <button>Receive</button>
+                            }
+                        </div>
+                    </div>
+
+                    <ul>
+                        @if (!string.IsNullOrEmpty(order.OrderListJson))
+                        {
+                            var products = JsonSerializer.Deserialize<List<ProductModel>>(order.OrderListJson);
+                            foreach (var product in products)
+                            {
+                                <li>@product.Name - $@product.Price</li>
+                            }
+                        }
+                    </ul>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No active orders found.</p>
+    }
+</body>
+</html>

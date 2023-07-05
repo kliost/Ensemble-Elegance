@@ -4,9 +4,9 @@
 
 
 //
-//function noenter() {
-//    return !(window.event && window.event.keyCode == 13);
-//}
+function noenter() {
+    return !(window.event && window.event.keyCode == 13);
+}
 
 
 const formElement = document.querySelector("form");

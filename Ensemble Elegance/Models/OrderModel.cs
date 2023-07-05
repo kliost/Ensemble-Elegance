@@ -43,5 +43,6 @@ namespace Ensemble_Elegance.Models
         public string? OrderListJson { get; set; }
         [Required]
         public OrderStatus? Status { get; set; }
+
     }
 }
