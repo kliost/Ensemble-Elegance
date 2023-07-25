@@ -1,29 +1,50 @@
 ﻿@model Ensemble_Elegance.Models.RegisterModel
 @{
+    Layout = "";
 }
-<form method="post" asp-controller="Account" asp-action="Register">
-    <div asp-validation-summary="ModelOnly"></div>
-@*    <div>
-        <label asp-for="Username"></label><br />
-        <input asp-for="Username" />
-        <span asp-validation-for="Username"></span>
-    </div>*@
-    <div>
-        <label asp-for="Email"></label><br />
-        <input asp-for="Email" />
-        <span asp-validation-for="Email"></span>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Сторінка реєстрації</title>
+    <link rel="stylesheet" type="text/css" href="/css/RegistrationPage.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Реєстрація</h2>
+        <form asp-area="" method="post" asp-controller="Account" asp-action="Register">
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="form-group">
+                <label for="name">Ім'я:</label>
+                <span asp-validation-for="userName"></span>
+                <input asp-for="userName" type="text">
+            </div>
+            <div class="form-group">
+                <label>Прізвище:</label>
+                <span asp-validation-for="userSurname"></span>
+                <input asp-for="userSurname" type="text">
+            </div>
+            <div class="form-group">
+                <label>По-батькові:</label>
+                <span asp-validation-for="userThirdName"></span>
+                <input asp-for="userThirdName" type="text">
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <span asp-validation-for="Email"></span>
+                <input asp-for="Email" type="email" >
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль:</label>
+                <span asp-validation-for="password"></span>
+                <input asp-for="password" type="password">
+            </div>
+            <div class="form-group">
+                <label for="passwordConfirm">Підтвердження паролю:</label>
+                <span asp-validation-for="passwordConfirm"></span>
+                <input asp-for="passwordConfirm" type="password">
+            </div>
+            <button type="submit">Зареєструватися</button>
+        </form>
     </div>
-    <div>
-        <label asp-for="Password"></label><br />
-        <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
-    </div>
-    <div>
-        <label asp-for="PasswordConfirm"></label><br />
-        <input asp-for="PasswordConfirm" />
-        <span asp-validation-for="PasswordConfirm"></span>
-    </div>
-    <div>
-        <input class="btn btn-primary" type="submit" value="Register" />
-    </div>
-</form>
+</body>
+</html>

@@ -2,7 +2,6 @@
 
 <head>
     <link rel="stylesheet" href="/css/Cart.css" />
-    
 </head>
 
 <body>
@@ -16,51 +15,44 @@
     {
         <table class="table">
             <tbody>
-                    @{
-                        double Asum = 0;
-                    }
-                    @foreach (var item in Model)
-                    {
-                    <form method="post">
+                @{
+                    double Asum = 0;
+                }
+                @foreach (var product in Model)
+                {
                     <tr>
-                        <input type="hidden" name="Id" value="@item.productModel.Id" />
-                        <td class="product-image-cell"><img class="product-image" src="/images/@item.productModel.Id/@item.productModel.ImageFileName" /></td>
-                        <td class="product-name-cell">@item.productModel.Name</td>
-                        <td class="product-price-cell">@item.productModel.Price$</td>
+                        <td class="product-image-cell"><img class="product-image" src="/images/@product.productModel.Id/@product.productModel.ImageFileName" /></td>
+                        <td class="product-name-cell">@product.productModel.Name</td>
+                        <td class="product-price-cell" id="priceCell-@product.productModel.Id">@product.productModel.Price$</td>
                         <td class="product-quantity-cell">
-                            
-                                <div class="quantity-container">
-                                    <button class="plus-minus-button" method="post" type="submit" formaction="/Cart/DecrementQuantity?itemId=@item.productModel.Id">-</button>
-                                    <input id="quantityInput" type="text" class="quantity" value="@item.Quantity" />
-                                    <button class="plus-minus-button" type="submit" formaction="/Cart/IncrementQuantity?itemId=@item.productModel.Id">+</button>
-                                </div>
-
+                            <div class="quantity-container">
+                                <button class="plus-minus-button" type="button" onclick="decrementQuantity(@product.productModel.Id)">-</button>
+                                <input id="quantityInput-@product.productModel.Id" type="text" class="quantity" value="@product.Quantity" />
+                                <button class="plus-minus-button" type="button" onclick="incrementQuantity(@product.productModel.Id)">
+                                    +
+                                </button>
+                            </div>
                         </td>
-                       
-                            @{
-                                double sum = item.productModel.Price * item.Quantity;
-                                Asum += sum;
-                            }
-                        <td class="product-sum-cell">@sum$</td>
+                        @{
+                            double sum = product.productModel.Price * product.Quantity;
+                            Asum += sum;
+                        }
+                        <td class="product-sum-cell" id ="sumCell-@product.productModel.Id">@sum$</td>
                     </tr>
-                    </form>
-                    }
+                }
                 <tr class="total">
                     <th colspan="3"></th>
                     <th>Total:</th>
-                    <td>@Asum$</td>
+                    <td id="total">@Asum$</td>
                 </tr>
                 <tr>
-                    <form action="/Cart/CreateOrder" method="get" onkeydown="return event.key != 'Enter';">
-                        <td colspan="5"><button type="submit">Відправити замовлення</button></td>
+                    <form action="/Cart/PushOrder" method="get" onkeydown="return event.key != 'Enter';">
+                    <td colspan="5"><button type="submit">Відправити замовлення</button></td>
                     </form>
                 </tr>
-                
             </tbody>
         </table>
-
     }
-   
+    <script src="/js/Cart.js"></script>
 </body>
-<script src="/js/Cart.js"></script>
 

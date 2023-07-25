@@ -4,102 +4,62 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ensemble_Elegance.Models;
 using System.Text.Json;
+using Ensemble_Elegance.Services;
+using System.Runtime.CompilerServices;
+using System.Net;
 
 namespace Ensemble_Elegance.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        private readonly UserManager<UserModel> _userManager;
-        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public AdminController(ApplicationDbContext context, UserManager<UserModel> userManager, IWebHostEnvironment webHostEnvironment)
+        private readonly IAdminService _adminService;
+
+        public AdminController(IAdminService adminService)
         {
-            _context = context;
-            _userManager = userManager;
-            _webHostEnvironment = webHostEnvironment;
+            //_context = context;
+            _adminService = adminService;
         }
 
-        //CRUD
-
-        //Create
-
         [HttpGet]
-        public IActionResult AddNewItem()
+        public IActionResult AddNewproduct()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddNewItem(ProductModel item)
+        public async Task<IActionResult> AddNewproduct(ProductModel product)
         {
             if (ModelState.IsValid)
             {
-                if (item.imageFile != null)
-                {
-                    //Saving item to DB
-                    item.ImageFileName = item.imageFile.FileName;
-                    item.CategoriesJson = JsonSerializer.Serialize(item.CategoriesList);
-
-                    _context.ShopItems.Add(item);
-                    await _context.SaveChangesAsync();
-
-                    SaveImage(item);
-                }
+                await _adminService.AddNewproduct(product);
             }
 
             return RedirectToAction("Catalogue", "Home");
         }
 
-        //Update
 
         [HttpPost]
-        public IActionResult UpdateItem(ProductModel newItem)
+        public async Task<IActionResult> Updateproduct(ProductModel newproduct)
         {
-            ProductModel oldItem = _context.ShopItems.First(x => x.Id == newItem.Id);
-            _context.Entry(oldItem).State = EntityState.Detached;
-
-            // if image is changed
-            if (newItem.imageFile != null)
-            {
-                System.IO.File.Delete(Path.Combine(_webHostEnvironment.WebRootPath, "images", oldItem.Id.ToString(), oldItem.ImageFileName));
-
-                newItem.ImageFileName = newItem.imageFile.FileName;
-                SaveImage(newItem);
-            }
-            // if image is not changed
-            else
-            {
-                newItem.ImageFileName = oldItem.ImageFileName;
-            }
-
-            _context.ShopItems.Update(newItem);
-            _context.SaveChanges();
-            return RedirectToAction("ItemList", "Admin");
+            await _adminService.Updateproduct(newproduct);
+            return RedirectToAction("productList", "Admin");
         }
 
         [HttpGet]
-        public IActionResult UpdateItem(int id)
+        public IActionResult Updateproduct(int id)
         {
-            var itemToUpdate = _context.ShopItems.First(x => x.Id == id);
-            return View(itemToUpdate);
+            var productToUpdate = _adminService.GetProductByIdAsync(id);
+            return View(productToUpdate);
         }
 
-        //Delete
-
-        public IActionResult Delete(int id)
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
         {
-            var itemToDelete = _context.ShopItems.First(x => x.Id == id);
-
-            System.IO.Directory.Delete(Path.Combine(_webHostEnvironment.WebRootPath, "images", itemToDelete.Id.ToString()), recursive: true);
-
-            _context.ShopItems.Remove(itemToDelete);
-            _context.SaveChanges();
-            return RedirectToAction("ItemList");
+            await _adminService.Deleteproduct(id);
+            return RedirectToAction("productList");
         }
-
-        //Navigation
 
         [HttpGet]
         public IActionResult AdminPage()
@@ -107,42 +67,45 @@ namespace Ensemble_Elegance.Controllers
             return View();
         }
 
+
         [HttpGet]
-        public async Task<IActionResult> ItemList()
+        public async Task<IActionResult> ProductList()
         {
-            var itemlist = await _context.ShopItems.ToListAsync();
-            return View(itemlist);
+            var products = await _adminService.GetProductListAsync();
+            return View(products);
         }
+
 
         [HttpGet]
         public async Task<IActionResult> UserList()
         {
-            var Users = await _context.Users.ToListAsync();
+            var Users = await _adminService.GetUserListAsync();
             return View(Users);
         }
+
 
         [HttpGet]
         public async Task<IActionResult> ActiveOrders()
         {
-            var orders = await _context.Orders.Where(x => x.Status.Value != OrderStatus.Received).ToListAsync();
-            return View(orders);
+            List<OrderModel> orders = await _adminService.GetOrderListAsync();
+
+            return View(orders.Where(x => x.Status != OrderStatus.Received));
         }
 
-        private void SaveImage(ProductModel item)
+
+        [HttpGet]
+        public async Task<IActionResult> OrderHistory()
         {
-            string itemIdFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", item.Id.ToString());
-            string filepath = Path.Combine(itemIdFolder, item?.imageFile?.FileName);
+            List<OrderModel> orders = await _adminService.GetOrderListAsync();
 
-            if (!Directory.Exists(itemIdFolder))
-            {
-                Directory.CreateDirectory(itemIdFolder);
-            }
-
-            using (var stream = new FileStream(filepath, FileMode.Create))
-            {
-                item.imageFile.CopyTo(stream);
-            }
+            return View(orders.Where(x => x.Status == OrderStatus.Received));
         }
+
+        public async Task SetNextOrderStatus(int id)
+        {
+            await _adminService.SetNextOrderStatus(id);
+        }
+
     }
 
 }

@@ -5,11 +5,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Active Orders</title>
-    <link rel="stylesheet" href="/css/ActiveOrders.css" />    
+    <title>Orders history</title>
+    <link rel="stylesheet" href="/css/ActiveOrders.css" />
 </head>
 <body>
-    <h1>Active Orders</h1>
+    <h1>Orders history</h1>
 
     @if (Model != null && Model.Count > 0)
     {
@@ -24,21 +24,7 @@
                             <p>Email: @order.CustomerEmail</p>
                             <p>Phone: @order.CustomerPhone</p>
                             <p>Address: @order.CustomerAddress</p>
-                        </div>
-                        <div class="order-actions">
-                            @if (order.Status == OrderStatus.PendingConfirmation)
-                            {
-                                <button onclick="NextStatus(@order.Id)">Confirm</button>
-                            }
-                            else if (order.Status == OrderStatus.Confirmed)
-                            {
-                                <button onclick="NextStatus(@order.Id)">Ship</button>
-                            }
-                            else if (order.Status == OrderStatus.Shipped)
-                            {
-                                <button onclick="NextStatus(@order.Id)">Received</button>
-                            }
-                        </div>
+                        </div>                       
                     </div>
 
                     <ul>
@@ -57,8 +43,8 @@
     }
     else
     {
-        <p>No active orders found.</p>
+        <p>No orders found.</p>
     }
-    <script src="/js/ActiveOrders.js"></script>
+
 </body>
 </html>

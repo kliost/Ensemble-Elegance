@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace WebApplication1.Migrations
+namespace Ensemble_Elegance.Migrations
 {
     /// <inheritdoc />
-    public partial class mig : Migration
+    public partial class createdDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -61,7 +61,8 @@ namespace WebApplication1.Migrations
                     CustomerEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CustomerPhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CustomerAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OrderItemList = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    OrderListJson = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -69,19 +70,21 @@ namespace WebApplication1.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ShopItems",
+                name: "Products",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ShortDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
-                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ImageFileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CategoriesJson = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShopItems", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -252,7 +255,7 @@ namespace WebApplication1.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "ShopItems");
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

@@ -1,8 +1,18 @@
 ﻿
-
-<a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="UserList">Користувачі</a>
-<a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="ItemList">Товари</a>
-<a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="ActiveOrders">Активні замовлення</a>
-<a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="OrderHistory">Історія замовлень</a>
-
-
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Адмін панель</title>
+    <link rel="stylesheet" href="/css/AdminPage.css">
+</head>
+<body>
+    <div class="admin-panel">
+        <ul class="menu">
+            <li><a asp-controller="Admin" asp-action="UserList">Користувачі</a></li>
+            <li><a asp-controller="Admin" asp-action="ProductList">Товари</a></li>
+            <li><a asp-controller="Admin" asp-action="ActiveOrders">Активні замовлення</a></li>
+            <li><a asp-controller="Admin" asp-action="OrderHistory">Історія замовлень</a></li>
+        </ul>
+    </div>
+</body>
+</html>

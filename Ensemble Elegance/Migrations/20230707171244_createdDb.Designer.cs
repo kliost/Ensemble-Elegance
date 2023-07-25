@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace WebApplication1.Migrations
+namespace Ensemble_Elegance.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230623154102_ordersupdate2")]
-    partial class ordersupdate2
+    [Migration("20230707171244_createdDb")]
+    partial class createdDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,7 +96,7 @@ namespace WebApplication1.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ShopItems");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Ensemble_Elegance.Models.UserModel", b =>

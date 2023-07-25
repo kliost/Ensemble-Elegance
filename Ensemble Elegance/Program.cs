@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Ensemble_Elegance.Models;
-
-using System.Web.Mvc;
-
+using Ensemble_Elegance.Services;
+using Microsoft.Extensions.DependencyInjection;
 namespace Ensemble_Elegance
 {
 
@@ -15,7 +14,6 @@ namespace Ensemble_Elegance
         {
             new IdentityRole("Admin")
         };
-
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -24,7 +22,7 @@ namespace Ensemble_Elegance
 
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddIdentity<UserModel, IdentityRole>().AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.AddIdentity<UserModel, IdentityRole>(options => { options.User.RequireUniqueEmail = true; }).AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
             builder.Services.AddAuthentication();
 
@@ -32,10 +30,15 @@ namespace Ensemble_Elegance
 
             builder.Services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(30); // Встановлюємо таймаут сесії
+                options.IdleTimeout = TimeSpan.FromDays(3);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
+
+            builder.Services.AddScoped<IAdminService, AdminService>();
+            builder.Services.AddScoped<ICartService, CartService>();
+
+
 
             var app = builder.Build();
 

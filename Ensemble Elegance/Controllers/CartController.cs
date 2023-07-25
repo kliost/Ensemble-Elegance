@@ -1,135 +1,65 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Ensemble_Elegance.Models;
 using Ensemble_Elegance.Extensions;
 using System.Text.Json;
+using Ensemble_Elegance.Services;
 
 namespace Ensemble_Elegance.Controllers
 {
     public class CartController : Controller
     {
-
-        private readonly ApplicationDbContext _context;
-        private readonly ISession _session;
-        public CartController(ApplicationDbContext context, UserManager<UserModel> userManager, IHttpContextAccessor httpContextAccessor)
+        private readonly ICartService _cartService;
+        public CartController(ICartService cartService)
         {
-            _context = context;
-            _session = httpContextAccessor.HttpContext.Session;
+
+            _cartService = cartService;
+
         }
 
-        [HttpPost]
-        public async Task PlaceOrder(OrderModel order)
-        {
-            if (order != null)
-            {
-                _context.Add(order);
-                await _context.SaveChangesAsync();
-            }
-        }
+
         [HttpGet]
-        public IActionResult AddToCartById(int itemId)
-        {
-            List<CartProductModel> cart = _session.GetObject<List<CartProductModel>>("Cart") ?? new List<CartProductModel>();
-
-
-            ProductModel? item = _context.ShopItems.Where(x => x.Id == itemId).FirstOrDefault();
-
-            if (item != null)
-            {
-                CartProductModel cartProduct = new()
-                {
-                    productModel = item
-                };
-                var ExistingProductInCart = cart.Where(x => x.productModel.Id == cartProduct.productModel.Id).FirstOrDefault();
-                if (ExistingProductInCart != null)
-                {
-                    ExistingProductInCart.Quantity++;
-                }
-                else
-                {
-                    cartProduct.Quantity = 1;
-                    cart.Add(cartProduct);
-                }
-            }
-
-
-
-            _session.SetObject("Cart", cart);
-            return RedirectToAction("Cart", "Cart");
-        }
-
         public IActionResult Cart()
         {
-            List<CartProductModel> cart = _session.GetObject<List<CartProductModel>>("Cart") ?? new List<CartProductModel>();
-
+            var cart = _cartService.GetCart();
             return View(cart);
         }
 
-        public IActionResult IncrementQuantity(int itemId)
-        {
-            List<CartProductModel> cart = _session.GetObject<List<CartProductModel>>("Cart") ?? new List<CartProductModel>();
-            CartProductModel? cartProduct = cart.Where(x => x.productModel.Id == itemId).FirstOrDefault();
 
-            if (cartProduct != null)
-            {
-                cartProduct.Quantity++;
-            }
-            _session.SetObject("Cart", cart);
+
+
+        [HttpGet]
+        public IActionResult AddToCartById(int productId)
+        {
+            _cartService.AddToCartById(productId);
             return RedirectToAction("Cart", "Cart");
         }
-        public IActionResult DecrementQuantity(int itemId)
+
+
+
+        public IActionResult UpdateQuantity(int productId, int newQuantity)
         {
-            List<CartProductModel> cart = _session.GetObject<List<CartProductModel>>("Cart") ?? new List<CartProductModel>();
-            CartProductModel? cartProduct = cart.Where(x => x.productModel.Id == itemId).FirstOrDefault();
-
-            if (cartProduct != null)
-            {
-
-                cartProduct.Quantity--;
-
-                if (cartProduct.Quantity <= 0)
-                {
-                    cart.Remove(cartProduct);
-                }
-            }
-            _session.SetObject("Cart", cart);
-            return RedirectToAction("Cart", "Cart");
+            _cartService.UpdateQuantity(productId, newQuantity);
+            return Json(new { success = true });
         }
-        public IActionResult UpdateQuantity(int itemId, int newQuantity)
+        public IActionResult DeleteFromCart(int productId)
         {
-            List<CartProductModel> cart = _session.GetObject<List<CartProductModel>>("Cart") ?? new List<CartProductModel>();
-            CartProductModel? cartProduct = cart.Where(x => x.productModel.Id == itemId).FirstOrDefault();
-            if (cartProduct != null)
-            {
-                cartProduct.Quantity = newQuantity;
-            }
-            _session.SetObject("Cart", cart);
-            return RedirectToAction("Cart", "Cart");
-        }
-        public IActionResult DeleteFromCart(int itemId)
-        {
-            List<CartProductModel> cart = _session.GetObject<List<CartProductModel>>("Cart") ?? new List<CartProductModel>();
-            CartProductModel? cartProduct = cart.Where(x => x.productModel.Id == itemId).FirstOrDefault();
-            if (cartProduct != null) cart.Remove(cartProduct);
+            _cartService.DeleteFromCart(productId);
             return RedirectToAction("Cart", "Cart");
         }
 
         [HttpGet]
-        public IActionResult CreateOrder()
+        public IActionResult PushOrder()
         {
             OrderModel order = new OrderModel();
             return View(order);
         }
         [HttpPost]
-        public IActionResult CreateOrder(OrderModel order)
+        public IActionResult PushOrder(OrderModel order)
         {
-            List<CartProductModel> cart = _session.GetObject<List<CartProductModel>>("Cart");
+            List<CartProductModel> cart = _cartService.GetCart();
             if (cart != null)
             {
-                order.Status = OrderStatus.PendingConfirmation;
-                order.OrderListJson = JsonSerializer.Serialize(cart);
-                _context.Orders.Add(order);
-                _context.SaveChanges();
+                _cartService.PushOrder(order);
                 return View("ThanksForOrder");
             }
             else

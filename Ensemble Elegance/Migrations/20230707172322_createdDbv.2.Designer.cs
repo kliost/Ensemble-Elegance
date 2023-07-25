@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace WebApplication1.Migrations
+namespace Ensemble_Elegance.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230608220920_2351")]
-    partial class _2351
+    [Migration("20230707172322_createdDbv.2")]
+    partial class createdDbv2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,9 +53,12 @@ namespace WebApplication1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("OrderItemList")
+                    b.Property<string>("OrderListJson")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -70,15 +73,14 @@ namespace WebApplication1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Category")
-                        .IsRequired()
+                    b.Property<string>("CategoriesJson")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageRoute")
+                    b.Property<string>("ImageFileName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -94,7 +96,7 @@ namespace WebApplication1.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ShopItems");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Ensemble_Elegance.Models.UserModel", b =>

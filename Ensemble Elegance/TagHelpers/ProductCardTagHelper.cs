@@ -23,7 +23,7 @@ namespace Ensemble_Elegance.TagHelpers
                     <p class='product-description'>{Product.ShortDescription}</p>
                     <p class='product-price'>₴{Product.Price}</p>
               </a>
-              <a href='/Cart/AddToCartById?itemId={Product.Id}' class='add-to-cart-btn' >Додати до корзини</a>
+              <a href='/Cart/AddToCartById?productId={Product.Id}' class='add-to-cart-btn' >Додати до корзини</a>
                 ";
             output.Content.SetHtmlContent(content);
         }

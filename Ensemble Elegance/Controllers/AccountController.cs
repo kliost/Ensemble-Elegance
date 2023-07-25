@@ -14,6 +14,7 @@ namespace Ensemble_Elegance.Controllers
             _signInManager = signInManager;
 
         }
+
         [HttpGet]
         public IActionResult Register()
         {
@@ -25,7 +26,7 @@ namespace Ensemble_Elegance.Controllers
             if (ModelState.IsValid)
             {
                 UserModel user = new UserModel { Email = model.Email, UserName = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var result = await _userManager.CreateAsync(user, model.password);
                 if (result.Succeeded)
                 {
 

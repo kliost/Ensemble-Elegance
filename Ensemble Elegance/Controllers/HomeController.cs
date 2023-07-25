@@ -30,7 +30,7 @@ namespace Ensemble_Elegance.Controllers
         public IActionResult Catalogue(int page = 1, int pagesize = 25)
         {
 
-            var items = _context.ShopItems.ToList();
+            var items = _context.Products.ToList();
 
             var paginationModel = new PaginationModel
             {
@@ -53,7 +53,7 @@ namespace Ensemble_Elegance.Controllers
 
             try
             {
-                ProductModel? product = _context.ShopItems.Where(x => x.Id == productId).FirstOrDefault();
+                ProductModel? product = _context.Products.Where(x => x.Id == productId).FirstOrDefault();
 
                 List<ProductModel> visitedProducts = _session.GetObject<List<ProductModel>>("VisitedProducts") ?? new List<ProductModel>();
 
