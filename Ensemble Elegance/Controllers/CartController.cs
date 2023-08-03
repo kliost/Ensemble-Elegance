@@ -25,8 +25,6 @@ namespace Ensemble_Elegance.Controllers
         }
 
 
-
-
         [HttpGet]
         public IActionResult AddToCartById(int productId)
         {
@@ -35,17 +33,19 @@ namespace Ensemble_Elegance.Controllers
         }
 
 
-
         public IActionResult UpdateQuantity(int productId, int newQuantity)
         {
             _cartService.UpdateQuantity(productId, newQuantity);
             return Json(new { success = true });
         }
+
+
         public IActionResult DeleteFromCart(int productId)
         {
             _cartService.DeleteFromCart(productId);
             return RedirectToAction("Cart", "Cart");
         }
+
 
         [HttpGet]
         public IActionResult PushOrder()
@@ -53,6 +53,8 @@ namespace Ensemble_Elegance.Controllers
             OrderModel order = new OrderModel();
             return View(order);
         }
+
+
         [HttpPost]
         public IActionResult PushOrder(OrderModel order)
         {

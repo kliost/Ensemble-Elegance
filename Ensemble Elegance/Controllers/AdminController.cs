@@ -22,11 +22,13 @@ namespace Ensemble_Elegance.Controllers
             _adminService = adminService;
         }
 
+
         [HttpGet]
         public IActionResult AddNewproduct()
         {
             return View();
         }
+
 
         [HttpPost]
         public async Task<IActionResult> AddNewproduct(ProductModel product)
@@ -47,6 +49,7 @@ namespace Ensemble_Elegance.Controllers
             return RedirectToAction("productList", "Admin");
         }
 
+
         [HttpGet]
         public IActionResult Updateproduct(int id)
         {
@@ -54,12 +57,14 @@ namespace Ensemble_Elegance.Controllers
             return View(productToUpdate);
         }
 
+
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             await _adminService.Deleteproduct(id);
             return RedirectToAction("productList");
         }
+
 
         [HttpGet]
         public IActionResult AdminPage()

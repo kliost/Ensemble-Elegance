@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Ensemble_Elegance.Models;
 using Ensemble_Elegance.Services;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc;
+
 namespace Ensemble_Elegance
 {
 

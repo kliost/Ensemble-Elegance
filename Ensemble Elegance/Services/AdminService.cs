@@ -1,9 +1,7 @@
-﻿
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Ensemble_Elegance.Models;
 using System.Text.Json;
-using System.Web.Mvc.Async;
 
 namespace Ensemble_Elegance.Services
 {

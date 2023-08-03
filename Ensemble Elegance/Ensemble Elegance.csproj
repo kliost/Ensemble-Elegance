@@ -7,7 +7,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Content Remove="wwwroot\js\Layout.js" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <_ContentIncludedByDefault Remove="wwwroot\js\Layout.js" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<None Include="wwwroot\css\item.css" />
+		<None Include="wwwroot\js\Layout.js" />
 		<None Include="wwwroot\js\site.js" />
 		<None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
 		<None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />

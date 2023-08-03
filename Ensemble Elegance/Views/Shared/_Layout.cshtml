@@ -1,5 +1,4 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -8,50 +7,65 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="/css/Layout.css" />
-    
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
 </head>
 <body>
     <header>
         <nav>
             <div class="logo">
-                <a href="#"><img src="logo.png" alt="Логотип"></a>
+                <a href=""><img src="/ico/logo.png" alt="Логотип"></a>
             </div>
             <ul class="nav-links">
+
                 <li><a asp-controller="Home" asp-action="Index">Головна</a></li>
                 <li><a asp-controller="Home" asp-action="Catalogue">Каталог</a></li>
                 <li><a asp-controller="Home" asp-action="About">Про нас</a></li>
                 <li><a asp-controller="Home" asp-action="Contacts">Контакти</a></li>
+                <li class="icon">
+                    <a asp-controller="Cart" asp-action="Cart">
+                        <span class="icon">🛒</span> 
+                    </a>
+                </li>
                 @if (User.Identity != null)
                 {
-                    @if (!User.Identity.IsAuthenticated)
-                    {
-                        <li><a asp-controller="Account" asp-action="Register">Реєстрація</a></li>
-                        <li><a asp-controller="Account" asp-action="Login">Авторизація</a></li>
-                    }
-                    <li><a asp-controller="Cart" asp-action="Cart">Корзина</a></li>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <form method="post" asp-controller="Account" asp-action="Logout">
-                        <li><button type="submit"> Вихід</button></li>
-                        </form>
+                        <li>
+                            <a asp-controller="Account" asp-action="">
+                                <span><img class="navbar-icon"  src="/ico/profile.png" /></span>
+                            </a>
+                        </li>
+                        <li>
+                            <form asp-controller="Account" asp-action="Logout" method="post">
+                                <button type="submit">
+                                    <img class="navbar-icon" src="/ico/logout.png" />
+                                </button>
+                            </form>
+                        </li>
                     }
-                    @if (User.IsInRole("Admin"))
+                    else
                     {
-                        <li class="nav-product">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="AdminPage">Admin</a>
+                        <li class="icon">
+                            <a asp-controller="Account" asp-action="Register">
+                                <span class="icon">📝</span>
+                            </a>
+                        </li>
+                        <li class="icon">
+                            <a asp-controller="Account" asp-action="Login">
+                                <span class="icon">🔒</span>
+                            </a>
                         </li>
                     }
                 }
             </ul>
         </nav>
     </header>
-   
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
-            
+
         </main>
     </div>
 
@@ -64,6 +78,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="/js/Layout.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -2,17 +2,24 @@
 using Microsoft.AspNetCore.Identity;
 using Ensemble_Elegance.Extensions;
 using System.Text.Json;
-
+using System.Net.Mail;
+using System.Net;
 
 namespace Ensemble_Elegance.Services
 {
     public interface ICartService
     {
         public void PushOrder(OrderModel order);
+
         public void AddToCartById(int productId);
+
         public List<CartProductModel> GetCart();
+
         public void UpdateQuantity(int productId, int newQuantity);
+
         public void DeleteFromCart(int productId);
+
+        public void SendEmailTo(string email);
 
     }
 
@@ -62,6 +69,7 @@ namespace Ensemble_Elegance.Services
             order.OrderListJson = JsonSerializer.Serialize(cart);
             _context.Orders.Add(order);
             _context.SaveChanges();
+            SendEmailTo(order.CustomerEmail);
         }
         // Removes product from cart using id
         public void DeleteFromCart(int productId)
@@ -90,6 +98,24 @@ namespace Ensemble_Elegance.Services
             _session.SetObject("Cart", cart);
         }
 
+        public void SendEmailTo(string recipientEmailAddress)
+        {
+            string senderEmail = Environment.senderEmailAdress;
+            string senderPassword = Environment.senderPassword;
+            string recipientEmail = recipientEmailAddress;
 
+            var mailMessage = new MailMessage(senderEmail, recipientEmail, "Esensemble Elegance", "Your order is accepted");
+            var smtpClient = new SmtpClient("smtp.gmail.com", 587)
+            {
+                EnableSsl = true,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(senderEmail, senderPassword)
+            };
+
+
+            smtpClient.Send(mailMessage);
+
+
+        }
     }
 }
